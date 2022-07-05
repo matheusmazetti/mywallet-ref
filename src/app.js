@@ -3,11 +3,13 @@ import cors from "cors";
 import express from "express";
 import jwt from "jsonwebtoken";
 import connection from "./database.js";
+import { errorHandling } from "./middlewares/error.js";
+import signUpRouter from "./router/signup.js";
 
 const app = express();
 app.use(cors());
 app.use(express.json());
-
+app.use(signUpRouter);
 app.post("/sign-in", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -149,5 +151,7 @@ app.get("/financial-events/sum", async (req, res) => {
     res.sendStatus(500);
   }
 });
+
+app.use(errorHandling);
 
 export default app;
